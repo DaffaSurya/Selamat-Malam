@@ -142,7 +142,7 @@ function getPageHtml(pageNum) {
             <!-- Polaroid Left -->
             <div class="polaroid-card p-2.5 sm:p-3 rounded-xl rotate-[-1deg] sm:rotate-[-2deg] border border-stone-200 relative group cursor-pointer active:scale-95 touch-manipulation" onclick="createBurst(event)">
               <div class="washi-tape w-14 sm:w-16 h-3.5 sm:h-4 -top-2 left-6 sm:left-8 rotate-3"></div>
-              <div class="h-40 sm:h-48 rounded-lg overflow-hidden bg-stone-100 flex items-center justify-center relative">
+              <div class="h-50 sm:h-50 rounded-lg overflow-hidden bg-stone-100 flex items-center justify-center relative">
                 <img src="fotodappa3.jpeg" alt="Momen Senja Hangat" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                 <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded-md bg-black/60 text-white text-[9px] sm:text-[10px] backdrop-blur-sm">Klik untuk cinta 💖</span>
               </div>
