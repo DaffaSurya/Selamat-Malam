@@ -7,12 +7,22 @@
   --accent-rose: #f4a5a5;
 }
 
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
   background-color: var(--bg-dark);
   color: #e2e8f0;
   overflow-x: hidden;
   user-select: none;
+  -webkit-user-select: none;
 }
 
 .font-handwriting {
@@ -53,17 +63,18 @@ body {
   background: #ffffff;
   box-shadow: 0 10px 25px rgba(0,0,0,0.25);
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  touch-action: manipulation;
 }
 
-.polaroid-card:hover {
-  transform: scale(1.03) rotate(0deg) !important;
+.polaroid-card:hover, .polaroid-card:active {
+  transform: scale(1.02) rotate(0deg) !important;
   z-index: 10;
 }
 
 /* Floating Animations */
 @keyframes floatSlow {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-8px) rotate(1deg); }
+  50% { transform: translateY(-6px) rotate(1deg); }
 }
 
 .animate-float-slow {
@@ -84,9 +95,14 @@ body {
   transition: background 0.8s ease, backdrop-filter 0.8s ease;
 }
 
+/* Touch optimization for mobile buttons */
+button {
+  touch-action: manipulation;
+}
+
 /* Custom Scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
