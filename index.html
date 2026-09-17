@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Menjelang Tidur</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen flex flex-col justify-between items-center relative p-3 sm:p-6 select-none">
+
+  <!-- Ambient Night Sky Canvas -->
+  <canvas id="starsCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+  <!-- Glowing background orbs -->
+  <div class="fixed top-12 left-1/4 w-72 h-72 rounded-full bg-amber-500/10 blur-3xl pointer-events-none animate-pulse-glow"></div>
+  <div class="fixed bottom-10 right-1/4 w-96 h-96 rounded-full bg-indigo-600/10 blur-3xl pointer-events-none animate-pulse-glow" style="animation-delay: 2s;"></div>
+
+  <!-- Top Navigation & Controls Bar -->
+  <header class="w-full max-w-2xl flex items-center justify-between z-20 pt-2 pb-3 px-2 sm:px-0">
+    <div class="flex items-center gap-2">
+      <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/10 text-amber-300 border border-white/10 text-xs">
+        <i class="fa-solid fa-moon"></i>
+      </span>
+      <span class="text-xs sm:text-sm tracking-wider font-medium text-amber-100/70 uppercase">Malam untukmu</span>
+    </div>
+    
+    <div class="flex items-center gap-3">
+      <!-- Audio Toggle Button -->
+      <button id="audioToggleBtn" onclick="toggleAudio()" class="group flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-xs text-amber-200 transition-all duration-300 active:scale-95" title="Putar Musik Santai">
+        <i id="audioIcon" class="fa-solid fa-music text-amber-300 group-hover:scale-110 transition-transform"></i>
+        <span id="audioText" class="hidden sm:inline">Lagu Pengantar Tidur</span>
+      </button>
+
+      <!-- Page Progress Pill -->
+      <div class="px-3 py-1 rounded-full bg-white/10 border border-white/10 text-xs text-amber-200/90 font-medium">
+        <span id="currentPageNum">1</span> / 5
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Scrapbook Container -->
+  <main class="w-full max-w-2xl my-auto z-10 py-2">
+    <div id="scrapbookBook" class="scrapbook-paper rounded-3xl p-6 sm:p-10 border border-amber-900/10 min-h-[540px] flex flex-col justify-between transition-all duration-500 transform">
+      
+      <!-- Top tape decor on scrapbook corner -->
+      <div class="washi-tape w-24 h-6 -top-3 left-10 -rotate-3 z-20"></div>
+      <div class="washi-tape washi-tape-pink w-20 h-6 -top-2 right-12 rotate-2 z-20"></div>
+
+      <!-- PAGE CONTENT INJECTIONS -->
+      <div id="pageContentArea" class="flex-grow flex flex-col justify-center">
+        <!-- Rendered by JavaScript -->
+      </div>
+
+      <!-- Bottom Navigation Footer inside Scrapbook -->
+      <div class="pt-6 mt-4 border-t border-[#ebd8bc]/70 flex items-center justify-between text-xs sm:text-sm">
+        <button id="prevBtn" onclick="prevPage()" class="opacity-0 pointer-events-none px-4 py-2 rounded-xl text-stone-600 hover:text-stone-900 hover:bg-[#ebd8bc]/40 font-semibold transition-all flex items-center gap-2">
+          <i class="fa-solid fa-arrow-left text-xs"></i>
+          <span>Kembali</span>
+        </button>
+
+        <!-- Cute sticker indicator in middle -->
+        <div class="flex items-center gap-1.5 text-stone-400 font-handwriting text-lg">
+          <i class="fa-solid fa-sparkles text-amber-600 text-xs"></i>
+          <span id="stepMiniHint">Buka lembaran pertama</span>
+        </div>
+
+        <button id="nextBtn" onclick="nextPage()" class="px-5 py-2.5 rounded-xl bg-[#2e3748] text-[#f7eedf] hover:bg-[#1f2633] font-semibold transition-all shadow-md active:scale-95 flex items-center gap-2">
+          <span id="nextBtnText">Buka Buku 🌙</span>
+          <i id="nextBtnIcon" class="fa-solid fa-arrow-right text-xs"></i>
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Bedside Dimmer Overlay for Lamp feature -->
+  <div id="bedsideDimmer" class="room-overlay fixed inset-0 pointer-events-none z-30 opacity-0 bg-black/80 flex items-center justify-center">
+    <div class="text-center p-6 max-w-md transform translate-y-6 transition-all duration-700 opacity-0" id="dimmerContent">
+      <div class="text-5xl mb-4 text-amber-300 animate-bounce"><i class="fa-regular fa-moon"></i></div>
+      <h3 class="font-serif-title text-2xl sm:text-3xl text-amber-100 font-bold mb-3">Lampu sudah padam...</h3>
+      <p class="font-handwriting text-2xl text-amber-200/90 leading-relaxed">
+        "Tarik napas panjang... hembuskan semua beban hari ini. Biarkan malam merawat lelahmu."
+      </p>
+      <button onclick="toggleBedsideLamp(false)" class="mt-6 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-xs tracking-wider uppercase border border-white/20 text-white transition pointer-events-auto">
+        Nyalakan Lampu Kecil 💡
+      </button>
+    </div>
+  </div>
+
+  <!-- Bottom Mini Footer -->
+  <footer class="text-center text-xs text-amber-100/40 z-20 py-2">
+    Dibuat oleh Daffa untuk Sarah tersayang
+  </footer>
+
+  <!-- Floating Hearts / Stars Canvas for Virtual Hug -->
+  <div id="burstContainer" class="fixed inset-0 pointer-events-none z-50 overflow-hidden"></div>
+
+  <!-- Background Audio Element -->
+  <audio id="bgAudio" src="Lofi-MP3.mp3" loop></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
